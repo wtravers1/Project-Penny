@@ -1,2 +1,4 @@
 *.pdf
 instructions.txt
+.venv/
+*__pycache__*
