@@ -1,16 +1,16 @@
 [
   {
+    "file": "decks_1000000x52_seed_1.npy",
+    "seed": 1,
+    "n_decks": 1000000,
+    "n_cards": 52,
+    "created": "2026-09-18 07:58:41.960767"
+  },
+  {
     "file": "decks_1000000x52_seed_2.npy",
     "seed": 2,
     "n_decks": 1000000,
     "n_cards": 52,
-    "created": "2026-09-17 13:33:21.258343"
-  },
-  {
-    "file": "decks_1000000x52_seed_3.npy",
-    "seed": 3,
-    "n_decks": 1000000,
-    "n_cards": 52,
-    "created": "2026-09-17 16:20:52.485354"
+    "created": "2026-09-18 07:58:54.270642"
   }
 ]

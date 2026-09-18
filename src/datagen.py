@@ -7,10 +7,11 @@ Every deck contains exactly 26 black and 26 red cards in a random order.
 
 Decks are created and saved in batches. Each batch:
     - uses its own unique random seed (the previous batch's seed + 1)
-    - is saved to its own file in data/raw/decks/ and never edited afterward
+    - is saved to its own file in data/raw/ and never edited afterward
     - is recorded in data/raw/deck_log.json (file name, seed, size, timestamp)
 
-Run this file directly to add one new batch of decks.
+This module is not meant to be run on its own. main.py calls generate_batch().
+All paths are relative to the project root, so run main.py from there.
 """
 
 import json
@@ -19,10 +20,9 @@ from pathlib import Path
 
 import numpy as np
 
-# Paths are built from this file's location so the script works from any working directory
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PATH_DECKS = PROJECT_ROOT / "data" / "raw" / "decks"
-PATH_DECK_LOG = PROJECT_ROOT / "data" / "raw" / "deck_log.json"
+# Paths are relative to the project root (run main.py from there)
+PATH_DECKS = Path("data/raw")
+PATH_DECK_LOG = Path("data/raw/deck_log.json")
 
 SEED_BASE = 1
 CARDS_PER_COLOR = 26
@@ -80,7 +80,7 @@ def get_next_seed() -> int:
 
 def save_decks(decks: np.ndarray, seed: int) -> Path:
     """
-    Save a batch of decks to data/raw/decks/ and return the file path.
+    Save a batch of decks to data/raw/ and return the file path.
 
     Decks are bit-packed before saving (1 bit per card instead of 1 byte),
     which shrinks 1 million decks from about 52 MB to about 7 MB.
@@ -142,7 +142,3 @@ def generate_batch(n_decks: int) -> Path:
     record_batch(filename, seed, n_decks)
     print(f"Saved {n_decks:,} decks with seed {seed} to {filename.name}")
     return filename
-
-
-if __name__ == "__main__":
-    generate_batch(n_decks=1_000_000)
