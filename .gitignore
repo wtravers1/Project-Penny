@@ -3,3 +3,4 @@ instructions.txt
 .venv/
 *__pycache__*
 scratch_fake_data.py
+sample-heatmap.svg

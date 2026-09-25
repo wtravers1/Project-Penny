@@ -1,4 +1,5 @@
 """
+# TODO ask about using flags vs prompting user
 Entry point for the Humble-Nishiyama game simulation.
 
 Run from the project root with exactly one of these flags:
@@ -22,6 +23,8 @@ Only the new decks are generated and scored; decks from earlier runs are never r
 import argparse
 
 from src.datagen import generate_batch
+from src.dataprocessing import process_new_batches
+from src.datavis import generate_heatmaps
 
 DEFAULT_N_DECKS = 1_000_000  # used when --add is given without a number
 MAX_N_DECKS = 10_000_000     # upper limit on decks added in one run
@@ -51,7 +54,7 @@ def parse_args() -> argparse.Namespace:
     action.add_argument(
         "--show",
         action="store_true",
-        help="display the most up-to-date heatmaps",
+        help="redraw the heatmaps from the results already processed",
     )
     action.add_argument(
         "--add",
@@ -59,7 +62,8 @@ def parse_args() -> argparse.Namespace:
         const=DEFAULT_N_DECKS,    # ...and defaults to 1,000,000 if left out
         type=parse_n_decks,
         metavar="N",
-        help=f"add N new decks (default {DEFAULT_N_DECKS:,}, max {MAX_N_DECKS:,})",
+        help=f"generate N new decks, score them, and update the heatmaps "
+             f"(default {DEFAULT_N_DECKS:,}, max {MAX_N_DECKS:,})",
     )
     return parser.parse_args()
 
@@ -68,12 +72,12 @@ def main() -> None:
     args = parse_args()
 
     if args.show:
-        # TODO: display the latest heatmaps from figures/
-        print("Heatmap display not implemented yet.")
+        generate_heatmaps()
 
     else:
-        generate_batch(args.add)
-        # TODO: score the new batch (processing) and redraw the heatmaps (visualization)
+        generate_batch(args.add)       # create the new decks
+        process_new_batches()          # score only the decks not scored yet
+        generate_heatmaps()            # redraw the heatmaps for every deck so far
 
 
 if __name__ == "__main__":

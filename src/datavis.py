@@ -14,8 +14,8 @@ PATH_FIGURES_ARCHIVE = Path("figures/archive")
  
 SCORING_VERSIONS = ("tricks", "cards")
 VERSION_DISPLAY_NAMES = {
-    "tricks": "Humble-Nishiyama Game (Scored by Tricks)",
-    "cards": "Ron's Variation (Scored by Cards)",
+    "tricks": "Tricks",  # the original Humble-Nishiyama game
+    "cards": "Cards",    # Ron's variation
 }
  
  
@@ -47,10 +47,11 @@ def get_pair_probability(
     row_seq: str,
     col_seq: str,
     sequence_order: list[str],
-) -> tuple[float, int]:
+) -> tuple[float, int, int]:
     """
-    Look up the win probability and tie count for one cell of the
-    heatmap: P(row_seq beats col_seq), plus their tie count.
+    Look up one cell of the heatmap: the probability that row_seq beats
+    col_seq (used for the cell color), plus the already-rounded win and tie
+    percentages stored by dataprocessing.py (used for the cell label).
  
     Pairs are stored unordered in pair_dict, under a key built from
     whichever of the two sequences comes first in sequence_order (that
@@ -68,7 +69,7 @@ def get_pair_probability(
             determine which sequence is "i" vs "j" for the stored key.
  
     Returns:
-        (p_row_beats_col, ties)
+        (p_row_beats_col, win_pct, tie_pct)
     """
     row_index = sequence_order.index(row_seq)
     col_index = sequence_order.index(col_seq)
@@ -77,12 +78,12 @@ def get_pair_probability(
         # row_seq is "i", col_seq is "j" -- stored directly
         key = f"{row_seq}_vs_{col_seq}"
         entry = pair_dict[key]
-        return entry["p_i_beats_j"], entry["ties"]
+        return entry["p_i_beats_j"], entry["win_pct_i"], entry["tie_pct"]
     else:
         # col_seq is "i", row_seq is "j" -- stored in the other direction
         key = f"{col_seq}_vs_{row_seq}"
         entry = pair_dict[key]
-        return entry["p_j_beats_i"], entry["ties"]
+        return entry["p_j_beats_i"], entry["win_pct_j"], entry["tie_pct"]
  
  
 def build_matrix(
@@ -96,7 +97,8 @@ def build_matrix(
         - win_probs: (8, 8) float array. win_probs[row][col] =
           P(sequence_order[row] beats sequence_order[col]). Diagonal
           values are meaningless (they're masked).
-        - tie_counts: (8, 8) int array, same indexing.
+        - win_pcts, tie_pcts: (8, 8) int arrays of whole percentages,
+          same indexing, used for the cell labels.
         - mask: (8, 8) boolean array, True on the diagonal.
         - sequence_labels: the row/column tick labels, in order.
     """
@@ -105,35 +107,38 @@ def build_matrix(
     pair_dict = probabilities[version]
  
     win_probs = np.zeros((n, n))
-    tie_counts = np.zeros((n, n), dtype=int)
+    win_pcts = np.zeros((n, n), dtype=int)
+    tie_pcts = np.zeros((n, n), dtype=int)
     mask = np.eye(n, dtype=bool)  # True on the diagonal, False elsewhere
  
     for row_i, row_seq in enumerate(sequence_order):
         for col_j, col_seq in enumerate(sequence_order):
             if row_i == col_j:
                 continue  # diagonal is masked, leave as 0/placeholder
-            p, ties = get_pair_probability(pair_dict, row_seq, col_seq, sequence_order)
+            p, win_pct, tie_pct = get_pair_probability(
+                pair_dict, row_seq, col_seq, sequence_order
+            )
             win_probs[row_i, col_j] = p
-            tie_counts[row_i, col_j] = ties
+            win_pcts[row_i, col_j] = win_pct
+            tie_pcts[row_i, col_j] = tie_pct
  
-    return win_probs, tie_counts, mask, sequence_order
+    return win_probs, win_pcts, tie_pcts, mask, sequence_order
  
  
-def build_annotations(win_probs: np.ndarray, tie_counts: np.ndarray, mask: np.ndarray) -> np.ndarray:
+def build_annotations(win_pcts: np.ndarray, tie_pcts: np.ndarray, mask: np.ndarray) -> np.ndarray:
     """
-    Build the per-cell text labels in the required "XX (YY)" format --
-    win percentage as a plain rounded number, followed by the tie count
-    in brackets. Diagonal cells get an empty string (they're masked/gray).
+    Build the per-cell text labels in the sample figure's exact "XX(YY)"
+    format -- win percentage, then the tie percentage in brackets, no space.
+    Diagonal cells get an empty string (they're masked/gray).
     """
-    n = win_probs.shape[0]
+    n = win_pcts.shape[0]
     annotations = np.empty((n, n), dtype=object)
     for i in range(n):
         for j in range(n):
             if mask[i, j]:
                 annotations[i, j] = ""
             else:
-                pct = round(win_probs[i, j] * 100)
-                annotations[i, j] = f"{pct} ({tie_counts[i, j]})"
+                annotations[i, j] = f"{win_pcts[i, j]}({tie_pcts[i, j]})"
     return annotations
  
  
@@ -180,8 +185,9 @@ def plot_heatmap(
     ax.set_xlabel("Opponent Choice")
     ax.set_ylabel("My Choice")
     ax.set_title(
-        f"{VERSION_DISPLAY_NAMES[version]}\n"
-        f"Cell values: win percentage (tie count) — N = {n_decks:,} decks"
+        f"My Probability of Win(Tie)\n"
+        f"Scoring By {VERSION_DISPLAY_NAMES[version]}\n"
+        f"N={n_decks:,}"
     )
  
     fig.tight_layout()
@@ -236,8 +242,10 @@ def generate_heatmaps() -> None:
     archive_existing_figures()
  
     for version in SCORING_VERSIONS:
-        win_probs, tie_counts, mask, sequence_labels = build_matrix(probabilities, version)
-        annotations = build_annotations(win_probs, tie_counts, mask)
+        win_probs, win_pcts, tie_pcts, mask, sequence_labels = build_matrix(
+            probabilities, version
+        )
+        annotations = build_annotations(win_pcts, tie_pcts, mask)
         fig = plot_heatmap(win_probs, annotations, mask, sequence_labels, version, n_decks)
         saved_path = save_figure(fig, f"heatmap_{version}.png")
         plt.close(fig)

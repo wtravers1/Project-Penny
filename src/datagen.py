@@ -100,6 +100,7 @@ def save_decks(decks: np.ndarray, seed: int) -> Path:
 
     np.save(filename, np.packbits(decks, axis=1))
     return filename
+    # TODO Ask why we need to upload data to GitHub if anyone running this script can generate the same numbers anyways
 
 
 def record_batch(filename: Path, seed: int, n_decks: int) -> None:
@@ -128,7 +129,6 @@ def load_decks(filename: Path) -> np.ndarray:
     packed_decks = np.load(filename)
     # packbits pads 52 bits up to 56 (7 whole bytes), so drop the 4 padding bits
     return np.unpackbits(packed_decks, axis=1)[:, :N_CARDS]
-    # TODO Ask why we need to upload data to GitHub if anyone running this script can generate the same numbers anyways
 
 
 def generate_batch(n_decks: int) -> Path:
