@@ -111,17 +111,17 @@ def build_matrix(
     tie_pcts = np.zeros((n, n), dtype=int)
     mask = np.eye(n, dtype=bool)  # True on the diagonal, False elsewhere
  
-    for row_i, row_seq in enumerate(sequence_order):
-        for col_j, col_seq in enumerate(sequence_order):
+    for row_i, opp_seq in enumerate(sequence_order):
+        for col_j, my_seq in enumerate(sequence_order):
             if row_i == col_j:
-                continue  # diagonal is masked, leave as 0/placeholder
+                continue  # diagonal is masked
             p, win_pct, tie_pct = get_pair_probability(
-                pair_dict, row_seq, col_seq, sequence_order
+                pair_dict, my_seq, opp_seq, sequence_order
             )
             win_probs[row_i, col_j] = p
             win_pcts[row_i, col_j] = win_pct
             tie_pcts[row_i, col_j] = tie_pct
- 
+
     return win_probs, win_pcts, tie_pcts, mask, sequence_order
  
  
@@ -167,7 +167,7 @@ def plot_heatmap(
         mask=mask,
         annot=annotations,
         fmt="",  # use our own annotation strings, not seaborn's number formatting
-        cmap="RdYlGn",
+        cmap="Blues",
         vmin=0,
         vmax=1,
         square=True,
@@ -182,8 +182,8 @@ def plot_heatmap(
     # Color the masked (diagonal) cells gray instead of leaving them blank
     ax.set_facecolor("lightgray")
  
-    ax.set_xlabel("Opponent Choice")
-    ax.set_ylabel("My Choice")
+    ax.set_xlabel("My Choice")
+    ax.set_ylabel("Opponent Choice")
     ax.set_title(
         f"My Probability of Win(Tie)\n"
         f"Scoring By {VERSION_DISPLAY_NAMES[version]}\n"
