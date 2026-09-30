@@ -100,7 +100,6 @@ def save_decks(decks: np.ndarray, seed: int) -> Path:
 
     np.save(filename, np.packbits(decks, axis=1))
     return filename
-    # TODO Ask why we need to upload data to GitHub if anyone running this script can generate the same numbers anyways
 
 
 def record_batch(filename: Path, seed: int, n_decks: int) -> None:

@@ -1,8 +1,12 @@
 """
-# TODO ask about using flags vs prompting user
 Entry point for the Humble-Nishiyama game simulation.
 
-Run from the project root with exactly one of these flags:
+Run from the project root. With no flags it asks what to do:
+
+    uv run main.py
+        Prompt for one of the two options below.
+
+Or pick an option directly with a flag:
 
     uv run main.py --show
         Display the most up-to-date heatmaps.
@@ -27,7 +31,7 @@ from src.dataprocessing import process_new_batches
 from src.datavis import generate_heatmaps
 
 DEFAULT_N_DECKS = 1_000_000  # used when --add is given without a number
-MAX_N_DECKS = 10_000_000     # upper limit on decks added in one run
+MAX_N_DECKS = 10_000_000  # upper limit on decks added in one run
 
 
 def parse_n_decks(text: str) -> int:
@@ -45,12 +49,13 @@ def parse_n_decks(text: str) -> int:
 
 def parse_args() -> argparse.Namespace:
     """
-    Read the command-line flags. Exactly one of --show or --add is required.
+    Read the command-line flags. --show and --add cannot be combined; if
+    neither is given, main() asks the user which one they want instead.
     """
     parser = argparse.ArgumentParser(
         description="Simulate the Humble-Nishiyama game and display the results."
     )
-    action = parser.add_mutually_exclusive_group(required=True)
+    action = parser.add_mutually_exclusive_group()
     action.add_argument(
         "--show",
         action="store_true",
@@ -58,26 +63,75 @@ def parse_args() -> argparse.Namespace:
     )
     action.add_argument(
         "--add",
-        nargs="?",                # the number after --add is optional...
-        const=DEFAULT_N_DECKS,    # ...and defaults to 1,000,000 if left out
+        nargs="?",
+        const=DEFAULT_N_DECKS,
         type=parse_n_decks,
         metavar="N",
         help=f"generate N new decks, score them, and update the heatmaps "
-             f"(default {DEFAULT_N_DECKS:,}, max {MAX_N_DECKS:,})",
+        f"(default {DEFAULT_N_DECKS:,}, max {MAX_N_DECKS:,})",
     )
     return parser.parse_args()
+
+
+def prompt_menu_choice() -> str:
+    """
+    Ask which of the two options the user wants and return "1" or "2".
+    Used when main.py is run without any flags. Keeps asking until the
+    answer is valid.
+    """
+    print("1. Display the most up-to-date heatmaps")
+    print("2. Add more decks to the simulation")
+    while True:
+        choice = input("Choose an option (1 or 2): ").strip()
+        if choice in ("1", "2"):
+            return choice
+        print("Please enter 1 or 2.")
+
+
+def prompt_number_of_decks() -> int:
+    """
+    Ask how many decks to add and return it as a positive whole number.
+    Pressing Enter without typing anything uses DEFAULT_N_DECKS.
+    """
+    while True:
+        answer = input(f"How many decks to add? (Enter for {DEFAULT_N_DECKS:,}): ").strip()
+        if answer == "":
+            return DEFAULT_N_DECKS
+        try:
+            return parse_n_decks(answer)
+        except argparse.ArgumentTypeError as error:
+            print(error)
+
+
+def add_decks(n_decks: int) -> None:
+    """Generate new decks, score only those decks, and redraw the heatmaps."""
+    generate_batch(n_decks)  # create the new decks
+    process_new_batches()  # score only the decks not scored yet
+    generate_heatmaps()  # redraw the heatmaps for every deck so far
+
+
+def show_heatmaps() -> None:
+    """
+    Redraw the heatmaps from results already processed, explaining what to
+    do first if no decks have been simulated yet.
+    """
+    try:
+        generate_heatmaps()
+    except FileNotFoundError as error:
+        print(error)
 
 
 def main() -> None:
     args = parse_args()
 
     if args.show:
-        generate_heatmaps()
-
+        show_heatmaps()
+    elif args.add is not None:
+        add_decks(args.add)
+    elif prompt_menu_choice() == "1":  # no flags given, so ask
+        show_heatmaps()
     else:
-        generate_batch(args.add)       # create the new decks
-        process_new_batches()          # score only the decks not scored yet
-        generate_heatmaps()            # redraw the heatmaps for every deck so far
+        add_decks(prompt_number_of_decks())
 
 
 if __name__ == "__main__":
