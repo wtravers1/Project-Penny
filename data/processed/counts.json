@@ -4,291 +4,293 @@
     "decks_1000000x52_seed_2.npy",
     "decks_1000000x52_seed_3.npy",
     "decks_1000x52_seed_4.npy",
-    "decks_999000x52_seed_5.npy"
+    "decks_999000x52_seed_5.npy",
+    "decks_1000000x52_seed_6.npy",
+    "decks_1000000x52_seed_7.npy"
   ],
-  "n_decks": 4000000,
+  "n_decks": 6000000,
   "tricks": {
     "BBB_vs_BBR": {
-      "wins_i": 1617462,
-      "wins_j": 1764905,
-      "ties": 617633
+      "wins_i": 2426335,
+      "wins_j": 2646919,
+      "ties": 926746
     },
     "BBB_vs_BRB": {
-      "wins_i": 846168,
-      "wins_j": 2659553,
-      "ties": 494279
+      "wins_i": 1269208,
+      "wins_j": 3990287,
+      "ties": 740505
     },
     "BBB_vs_BRR": {
-      "wins_i": 449465,
-      "wins_j": 3078311,
-      "ties": 472224
+      "wins_i": 674534,
+      "wins_j": 4617727,
+      "ties": 707739
     },
     "BBB_vs_RBB": {
-      "wins_i": 4574,
-      "wins_j": 3979127,
-      "ties": 16299
+      "wins_i": 6787,
+      "wins_j": 5968815,
+      "ties": 24398
     },
     "BBB_vs_RBR": {
-      "wins_i": 670865,
-      "wins_j": 2777730,
-      "ties": 551405
+      "wins_i": 1006868,
+      "wins_j": 4166513,
+      "ties": 826619
     },
     "BBB_vs_RRB": {
-      "wins_i": 33312,
-      "wins_j": 3869421,
-      "ties": 97267
+      "wins_i": 50017,
+      "wins_j": 5804261,
+      "ties": 145722
     },
     "BBB_vs_RRR": {
-      "wins_i": 1300480,
-      "wins_j": 1300808,
-      "ties": 1398712
+      "wins_i": 1950954,
+      "wins_j": 1950867,
+      "ties": 2098179
     },
     "BBR_vs_BRB": {
-      "wins_i": 3203891,
-      "wins_j": 464805,
-      "ties": 331304
+      "wins_i": 4806481,
+      "wins_j": 696437,
+      "ties": 497082
     },
     "BBR_vs_BRR": {
-      "wins_i": 3530098,
-      "wins_j": 207967,
-      "ties": 261935
+      "wins_i": 5296153,
+      "wins_j": 311497,
+      "ties": 392350
     },
     "BBR_vs_RBB": {
-      "wins_i": 105220,
-      "wins_j": 3740718,
-      "ties": 154062
+      "wins_i": 157635,
+      "wins_j": 5610977,
+      "ties": 231388
     },
     "BBR_vs_RBR": {
-      "wins_i": 3168289,
-      "wins_j": 454568,
-      "ties": 377143
+      "wins_i": 4753415,
+      "wins_j": 681588,
+      "ties": 564997
     },
     "BBR_vs_RRB": {
-      "wins_i": 1636007,
-      "wins_j": 1639098,
-      "ties": 724895
+      "wins_i": 2454984,
+      "wins_j": 2456903,
+      "ties": 1088113
     },
     "BBR_vs_RRR": {
-      "wins_i": 3868242,
-      "wins_j": 33622,
-      "ties": 98136
+      "wins_i": 5802568,
+      "wins_j": 50289,
+      "ties": 147143
     },
     "BRB_vs_BRR": {
-      "wins_i": 1726040,
-      "wins_j": 1726236,
-      "ties": 547724
+      "wins_i": 2589310,
+      "wins_j": 2590098,
+      "ties": 820592
     },
     "BRB_vs_RBB": {
-      "wins_i": 1693959,
-      "wins_j": 1768671,
-      "ties": 537370
+      "wins_i": 2540451,
+      "wins_j": 2653468,
+      "ties": 806081
     },
     "BRB_vs_RBR": {
-      "wins_i": 1625275,
-      "wins_j": 1624887,
-      "ties": 749838
+      "wins_i": 2438785,
+      "wins_j": 2435744,
+      "ties": 1125471
     },
     "BRB_vs_RRB": {
-      "wins_i": 453372,
-      "wins_j": 3169476,
-      "ties": 377152
+      "wins_i": 679789,
+      "wins_j": 4753879,
+      "ties": 566332
     },
     "BRB_vs_RRR": {
-      "wins_i": 2776043,
-      "wins_j": 671395,
-      "ties": 552562
+      "wins_i": 4164790,
+      "wins_j": 1006055,
+      "ties": 829155
     },
     "BRR_vs_RBB": {
-      "wins_i": 1727477,
-      "wins_j": 1725771,
-      "ties": 546752
+      "wins_i": 2590760,
+      "wins_j": 2588680,
+      "ties": 820560
     },
     "BRR_vs_RBR": {
-      "wins_i": 1767617,
-      "wins_j": 1694910,
-      "ties": 537473
+      "wins_i": 2652303,
+      "wins_j": 2542093,
+      "ties": 805604
     },
     "BRR_vs_RRB": {
-      "wins_i": 3740598,
-      "wins_j": 105175,
-      "ties": 154227
+      "wins_i": 5611806,
+      "wins_j": 157304,
+      "ties": 230890
     },
     "BRR_vs_RRR": {
-      "wins_i": 3979516,
-      "wins_j": 4491,
-      "ties": 15993
+      "wins_i": 5969280,
+      "wins_j": 6677,
+      "ties": 24043
     },
     "RBB_vs_RBR": {
-      "wins_i": 1725171,
-      "wins_j": 1726830,
-      "ties": 547999
+      "wins_i": 2589210,
+      "wins_j": 2589508,
+      "ties": 821282
     },
     "RBB_vs_RRB": {
-      "wins_i": 207290,
-      "wins_j": 3532362,
-      "ties": 260348
+      "wins_i": 310753,
+      "wins_j": 5297884,
+      "ties": 391363
     },
     "RBB_vs_RRR": {
-      "wins_i": 3077919,
-      "wins_j": 451836,
-      "ties": 470245
+      "wins_i": 4617533,
+      "wins_j": 676868,
+      "ties": 705599
     },
     "RBR_vs_RRB": {
-      "wins_i": 463839,
-      "wins_j": 3204214,
-      "ties": 331947
+      "wins_i": 695667,
+      "wins_j": 4806855,
+      "ties": 497478
     },
     "RBR_vs_RRR": {
-      "wins_i": 2659043,
-      "wins_j": 847312,
-      "ties": 493645
+      "wins_i": 3988863,
+      "wins_j": 1270557,
+      "ties": 740580
     },
     "RRB_vs_RRR": {
-      "wins_i": 1766084,
-      "wins_j": 1617543,
-      "ties": 616373
+      "wins_i": 2648796,
+      "wins_j": 2426128,
+      "ties": 925076
     }
   },
   "cards": {
     "BBB_vs_BBR": {
-      "wins_i": 1887317,
-      "wins_j": 2032864,
-      "ties": 79819
+      "wins_i": 2830440,
+      "wins_j": 3049736,
+      "ties": 119824
     },
     "BBB_vs_BRB": {
-      "wins_i": 1109506,
-      "wins_j": 2825872,
-      "ties": 64622
+      "wins_i": 1663378,
+      "wins_j": 4239391,
+      "ties": 97231
     },
     "BBB_vs_BRR": {
-      "wins_i": 703832,
-      "wins_j": 3216031,
-      "ties": 80137
+      "wins_i": 1056109,
+      "wins_j": 4824275,
+      "ties": 119616
     },
     "BBB_vs_RBB": {
-      "wins_i": 35,
-      "wins_j": 3999946,
-      "ties": 19
+      "wins_i": 59,
+      "wins_j": 5999915,
+      "ties": 26
     },
     "BBB_vs_RBR": {
-      "wins_i": 1007881,
-      "wins_j": 2906820,
-      "ties": 85299
+      "wins_i": 1512702,
+      "wins_j": 4359300,
+      "ties": 127998
     },
     "BBB_vs_RRB": {
-      "wins_i": 37876,
-      "wins_j": 3951832,
-      "ties": 10292
+      "wins_i": 56912,
+      "wins_j": 5927462,
+      "ties": 15626
     },
     "BBB_vs_RRR": {
-      "wins_i": 1943961,
-      "wins_j": 1941493,
-      "ties": 114546
+      "wins_i": 2914902,
+      "wins_j": 2912674,
+      "ties": 172424
     },
     "BBR_vs_BRB": {
-      "wins_i": 3452681,
-      "wins_j": 494738,
-      "ties": 52581
+      "wins_i": 5178814,
+      "wins_j": 742140,
+      "ties": 79046
     },
     "BBR_vs_BRR": {
-      "wins_i": 3822406,
-      "wins_j": 143917,
-      "ties": 33677
+      "wins_i": 5733535,
+      "wins_j": 216083,
+      "ties": 50382
     },
     "BBR_vs_RBB": {
-      "wins_i": 7513,
-      "wins_j": 3990557,
-      "ties": 1930
+      "wins_i": 11265,
+      "wins_j": 5985859,
+      "ties": 2876
     },
     "BBR_vs_RBR": {
-      "wins_i": 3670585,
-      "wins_j": 273901,
-      "ties": 55514
+      "wins_i": 5505972,
+      "wins_j": 410543,
+      "ties": 83485
     },
     "BBR_vs_RRB": {
-      "wins_i": 1911339,
-      "wins_j": 1911601,
-      "ties": 177060
+      "wins_i": 2867763,
+      "wins_j": 2866883,
+      "ties": 265354
     },
     "BBR_vs_RRR": {
-      "wins_i": 3951928,
-      "wins_j": 37735,
-      "ties": 10337
+      "wins_i": 5927752,
+      "wins_j": 56726,
+      "ties": 15522
     },
     "BRB_vs_BRR": {
-      "wins_i": 1942467,
-      "wins_j": 1943547,
-      "ties": 113986
+      "wins_i": 2913854,
+      "wins_j": 2914748,
+      "ties": 171398
     },
     "BRB_vs_RBB": {
-      "wins_i": 1680082,
-      "wins_j": 2232716,
-      "ties": 87202
+      "wins_i": 2519404,
+      "wins_j": 3349637,
+      "ties": 130959
     },
     "BRB_vs_RBR": {
-      "wins_i": 1953193,
-      "wins_j": 1950864,
-      "ties": 95943
+      "wins_i": 2929749,
+      "wins_j": 2926441,
+      "ties": 143810
     },
     "BRB_vs_RRB": {
-      "wins_i": 273627,
-      "wins_j": 3670687,
-      "ties": 55686
+      "wins_i": 410657,
+      "wins_j": 5505902,
+      "ties": 83441
     },
     "BRB_vs_RRR": {
-      "wins_i": 2905753,
-      "wins_j": 1008972,
-      "ties": 85275
+      "wins_i": 4358225,
+      "wins_j": 1513887,
+      "ties": 127888
     },
     "BRR_vs_RBB": {
-      "wins_i": 1943410,
-      "wins_j": 1941804,
-      "ties": 114786
+      "wins_i": 2914712,
+      "wins_j": 2913204,
+      "ties": 172084
     },
     "BRR_vs_RBR": {
-      "wins_i": 2232935,
-      "wins_j": 1680356,
-      "ties": 86709
+      "wins_i": 3349407,
+      "wins_j": 2520633,
+      "ties": 129960
     },
     "BRR_vs_RRB": {
-      "wins_i": 3990393,
-      "wins_j": 7613,
-      "ties": 1994
+      "wins_i": 5985659,
+      "wins_j": 11406,
+      "ties": 2935
     },
     "BRR_vs_RRR": {
-      "wins_i": 3999947,
-      "wins_j": 40,
-      "ties": 13
+      "wins_i": 5999913,
+      "wins_j": 64,
+      "ties": 23
     },
     "RBB_vs_RBR": {
-      "wins_i": 1940897,
-      "wins_j": 1944134,
-      "ties": 114969
+      "wins_i": 2912745,
+      "wins_j": 2915105,
+      "ties": 172150
     },
     "RBB_vs_RRB": {
-      "wins_i": 143030,
-      "wins_j": 3823166,
-      "ties": 33804
+      "wins_i": 215082,
+      "wins_j": 5734346,
+      "ties": 50572
     },
     "RBB_vs_RRR": {
-      "wins_i": 3214881,
-      "wins_j": 705389,
-      "ties": 79730
+      "wins_i": 4822829,
+      "wins_j": 1057374,
+      "ties": 119797
     },
     "RBR_vs_RRB": {
-      "wins_i": 494700,
-      "wins_j": 3452797,
-      "ties": 52503
+      "wins_i": 741990,
+      "wins_j": 5179191,
+      "ties": 78819
     },
     "RBR_vs_RRR": {
-      "wins_i": 2826846,
-      "wins_j": 1108311,
-      "ties": 64843
+      "wins_i": 4239591,
+      "wins_j": 1663104,
+      "ties": 97305
     },
     "RRB_vs_RRR": {
-      "wins_i": 2034277,
-      "wins_j": 1885870,
-      "ties": 79853
+      "wins_i": 3051494,
+      "wins_j": 2829055,
+      "ties": 119451
     }
   }
 }

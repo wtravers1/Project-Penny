@@ -79,7 +79,7 @@ recorded random seed, so any batch can be reproduced exactly.
 
 ## Findings
 
-The current figures are based on **4,000,000 simulated decks**.
+The current figures are based on **6,000,000 simulated decks**.
 
 ### There is no best sequence to pick first
 
@@ -132,5 +132,7 @@ Mostly, but not entirely.
 - **Symmetry.** Swapping every color in a matchup should not change the
   odds. Across all 56 cells the largest deviation is 0.11 percentage points.
 - **Convergence.** Going from 2 million to 3 million decks changed no cell
-  by even one whole percentage point, in either scoring version, so the
-  results have stabilized.
+  by even one whole percentage point, in either scoring version. Going from
+  4 million to 6 million moved a single cell by one point, and only because
+  its true value sits almost exactly halfway between two whole percentages.
+  The results have stabilized.

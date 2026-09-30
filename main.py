@@ -94,7 +94,8 @@ def prompt_number_of_decks() -> int:
     Pressing Enter without typing anything uses DEFAULT_N_DECKS.
     """
     while True:
-        answer = input(f"How many decks to add? (Enter for {DEFAULT_N_DECKS:,}): ").strip()
+        question = f"How many decks to add? (Enter for {DEFAULT_N_DECKS:,}): "
+        answer = input(question).strip()
         if answer == "":
             return DEFAULT_N_DECKS
         try:
@@ -128,10 +129,12 @@ def main() -> None:
         show_heatmaps()
     elif args.add is not None:
         add_decks(args.add)
-    elif prompt_menu_choice() == "1":  # no flags given, so ask
-        show_heatmaps()
     else:
-        add_decks(prompt_number_of_decks())
+        # No flag was given, so ask which option the user wants
+        if prompt_menu_choice() == "1":
+            show_heatmaps()
+        else:
+            add_decks(prompt_number_of_decks())
 
 
 if __name__ == "__main__":
