@@ -7,27 +7,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
  
-# Paths are relative to the project root (run main.py from there)
-PATH_PROBABILITIES = Path("data/processed/probabilities.json") #update with path once dataprocessing is done
+PATH_PROBABILITIES = Path("data/processed/probabilities.json") 
 PATH_FIGURES = Path("figures")
 PATH_FIGURES_ARCHIVE = Path("figures/archive")
  
 SCORING_VERSIONS = ("tricks", "cards")
 VERSION_DISPLAY_NAMES = {
-    "tricks": "Tricks",  # the original Humble-Nishiyama game
-    "cards": "Cards",    # Ron's variation
+    "tricks": "Tricks",  # original
+    "cards": "Cards",    # Ron's version
 }
  
  
-# ---------------------------------------------------------------------------
 # Loading processed data
-# ---------------------------------------------------------------------------
  
 def load_probabilities() -> dict:
     """
-    Load the probabilities.json file produced by dataprocessing.py.
+    Load the probabilities.json file produced by dataprocessing.py
  
-    Raises a clear error if the file doesn't exist yet.
+    Raises an error if the file doesn't exist
     """
     if not PATH_PROBABILITIES.exists():
         raise FileNotFoundError(
@@ -38,9 +35,7 @@ def load_probabilities() -> dict:
         return json.load(f)
  
  
-# ---------------------------------------------------------------------------
 # Building the 8x8 matrices for one scoring version
-# ---------------------------------------------------------------------------
  
 def get_pair_probability(
     pair_dict: dict,
@@ -51,22 +46,22 @@ def get_pair_probability(
     """
     Look up one cell of the heatmap: the probability that row_seq beats
     col_seq (used for the cell color), plus the already-rounded win and tie
-    percentages stored by dataprocessing.py (used for the cell label).
+    percentages stored by dataprocessing.py (used for the cell label)
  
     Pairs are stored unordered in pair_dict, under a key built from
     whichever of the two sequences comes first in sequence_order (that
     one is "i", the other is "j"). This function figures out which
     direction was stored, fetches the right entry, and returns the
     probability from row_seq's perspective regardless of which side of
-    the pair row_seq happened to be.
+    the pair row_seq happened to be
  
     Args:
         pair_dict: probabilities[version] -- the dict of all 28 pairs
-            for one scoring version.
-        row_seq: the sequence for this cell's row ("my choice").
-        col_seq: the sequence for this cell's column ("opponent choice").
+            for one scoring version
+        row_seq: the sequence for this cell's row ("opponent choice")
+        col_seq: the sequence for this cell's column ("my choice").
         sequence_order: the full ordered list of 8 sequences, used to
-            determine which sequence is "i" vs "j" for the stored key.
+            determine which sequence is "i" vs "j" for the stored key
  
     Returns:
         (p_row_beats_col, win_pct, tie_pct)
@@ -90,16 +85,16 @@ def build_matrix(
     probabilities: dict, version: str
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, list[str]]:
     """
-    Build the 8x8 probability matrix, tie-count matrix, and diagonal
-    mask for one scoring version, in sequence_order's row/column order.
+    Build the 8x8 win-probability matrix, the win and tie percentage
+    matrices, and a diagonal mask for one scoring version, in
+    sequence_order's row/column order
+ 
+    Rows are the opponent's choice and columns are my choice
  
     Returns:
-        - win_probs: (8, 8) float array. win_probs[row][col] =
-          P(sequence_order[row] beats sequence_order[col]). Diagonal
-          values are meaningless (they're masked).
-        - win_pcts, tie_pcts: (8, 8) int arrays of whole percentages,
-          same indexing, used for the cell labels.
-        - mask: (8, 8) boolean array, True on the diagonal.
+        - win_probs: (8, 8) float array. 
+        - win_pcts, tie_pcts: (8, 8) int arrays of whole percentages
+        - mask: (8, 8) boolean array, True on the diagonal
         - sequence_labels: the row/column tick labels, in order.
     """
     sequence_order = probabilities["sequence_order"]
@@ -109,12 +104,12 @@ def build_matrix(
     win_probs = np.zeros((n, n))
     win_pcts = np.zeros((n, n), dtype=int)
     tie_pcts = np.zeros((n, n), dtype=int)
-    mask = np.eye(n, dtype=bool)  # True on the diagonal, False elsewhere
+    mask = np.eye(n, dtype=bool) 
  
     for row_i, opp_seq in enumerate(sequence_order):
         for col_j, my_seq in enumerate(sequence_order):
             if row_i == col_j:
-                continue  # diagonal is masked
+                continue 
             p, win_pct, tie_pct = get_pair_probability(
                 pair_dict, my_seq, opp_seq, sequence_order
             )
@@ -127,9 +122,8 @@ def build_matrix(
  
 def build_annotations(win_pcts: np.ndarray, tie_pcts: np.ndarray, mask: np.ndarray) -> np.ndarray:
     """
-    Build the per-cell text labels in the sample figure's exact "XX(YY)"
-    format -- win percentage, then the tie percentage in brackets, no space.
-    Diagonal cells get an empty string (they're masked/gray).
+    Build the per-cell text labels
+    Diagonal cells get an empty string (they're masked/gray)
     """
     n = win_pcts.shape[0]
     annotations = np.empty((n, n), dtype=object)
@@ -141,10 +135,7 @@ def build_annotations(win_pcts: np.ndarray, tie_pcts: np.ndarray, mask: np.ndarr
                 annotations[i, j] = f"{win_pcts[i, j]}({tie_pcts[i, j]})"
     return annotations
  
- 
-# ---------------------------------------------------------------------------
 # Plotting
-# ---------------------------------------------------------------------------
  
 def plot_heatmap(
     win_probs: np.ndarray,
@@ -155,10 +146,8 @@ def plot_heatmap(
     n_decks: int,
 ) -> plt.Figure:
     """
-    Build one heatmap figure for one scoring version, matching the
-    professor's sample formatting requirements: gray diagonal, axes
-    labeled "My Choice"/"Opponent Choice", custom "XX (YY)" cell text,
-    and a title stating the scoring version and sample size.
+    Build one heatmap figure for one scoring version: gray diagonal, axes
+    labeled, and a title stating the scoring version and sample size
     """
     fig, ax = plt.subplots(figsize=(9, 7))
  
@@ -166,7 +155,7 @@ def plot_heatmap(
         win_probs,
         mask=mask,
         annot=annotations,
-        fmt="",  # use our own annotation strings, not seaborn's number formatting
+        fmt="",  
         cmap="Blues",
         vmin=0,
         vmax=1,
@@ -179,7 +168,7 @@ def plot_heatmap(
         ax=ax,
     )
  
-    # Color the masked (diagonal) cells gray instead of leaving them blank
+
     ax.set_facecolor("lightgray")
  
     ax.set_xlabel("My Choice")
@@ -194,15 +183,14 @@ def plot_heatmap(
     return fig
  
  
-# ---------------------------------------------------------------------------
-# Saving figures (with archiving of old versions, per assignment spec)
-# ---------------------------------------------------------------------------
+
+# Saving figures and archiving of old versions
+
  
 def archive_existing_figures() -> None:
     """
     Move any figures currently in the top level of figures/ into
-    figures/archive/ before saving new ones, so the top level always
-    contains only the most recent heatmaps.
+    figures/archive/ before saving new ones
     """
     if not PATH_FIGURES.exists():
         return
@@ -226,15 +214,12 @@ def save_figure(fig: plt.Figure, filename: str) -> Path:
     return path
  
  
-# ---------------------------------------------------------------------------
-# Top-level entry point used by main.py
-# ---------------------------------------------------------------------------
+#entry point used by main.py
  
 def generate_heatmaps() -> None:
     """
-    The main entry point, called from main.py when the user chooses to
-    "display the most up-to-date heatmaps." Builds and saves both
-    scoring versions' heatmaps from the current processed probabilities.
+    The main entry point, called from main.py. Builds and saves both
+    scoring versions heatmaps from the current processed probabilities
     """
     probabilities = load_probabilities()
     n_decks = probabilities["n_decks"]
