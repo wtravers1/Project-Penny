@@ -89,8 +89,7 @@ def build_matrix(
     matrices, and a diagonal mask for one scoring version, in
     sequence_order's row/column order
  
-    Rows are my choice and columns are the opponent's choice, matching the
-    sample figure (y axis "My Choice", x axis "Opponent Choice")
+    Rows are the opponent's choice and columns are my choice
  
     Returns:
         - win_probs: (8, 8) float array. 
@@ -107,8 +106,8 @@ def build_matrix(
     tie_pcts = np.zeros((n, n), dtype=int)
     mask = np.eye(n, dtype=bool) 
  
-    for row_i, my_seq in enumerate(sequence_order):
-        for col_j, opp_seq in enumerate(sequence_order):
+    for row_i, opp_seq in enumerate(sequence_order):
+        for col_j, my_seq in enumerate(sequence_order):
             if row_i == col_j:
                 continue 
             p, win_pct, tie_pct = get_pair_probability(
@@ -172,8 +171,8 @@ def plot_heatmap(
 
     ax.set_facecolor("lightgray")
  
-    ax.set_xlabel("Opponent Choice")
-    ax.set_ylabel("My Choice")
+    ax.set_xlabel("My Choice")
+    ax.set_ylabel("Opponent Choice")
     ax.set_title(
         f"My Probability of Win(Tie)\n"
         f"Scoring By {VERSION_DISPLAY_NAMES[version]}\n"
